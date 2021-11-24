@@ -151,3 +151,13 @@ class Ubiquiti_Automation():
             return f"Password is changed on {self.ip_address}"
         except Exception as e:
             logger.error(f"Exception:{e}:{self.ip_address}")
+
+            
+if __name__ == "__main__":
+    # give you details here for the radio.
+    script = Ubiquiti_Automation(ip_address="192.168.1.20",
+                                 radio_username='ubnt',
+                                 radio_password="ubnt")
+    print(script.change_password(new_password="new_password"))  
+            
+  
