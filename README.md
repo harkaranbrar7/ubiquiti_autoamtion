@@ -1,1 +1,1 @@
-# ubiquiti_autoamtion
+# ubiquiti_automation
