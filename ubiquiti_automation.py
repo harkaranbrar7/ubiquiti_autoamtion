@@ -124,14 +124,19 @@ class Ubiquiti_Automation():
         return os.path.join(self.local_path, "system.cfg")
 
     def change_password(self, new_password: str):
+        """ 
+            Change password on Ubiquiti Radio
+            
+            :param new_password: new password as string.
+            :type new_password: str
+        """
         try:
             self.conn = self._connect()
-
-            # Change password for the radio
             stdin, stdout, stderr = self.client.exec_command("passwd")
             stdin.write(f'{new_password}' '\n' f'{new_password}' '\n')
             stdin.close()
-            logger.info("Password is changed is initiated")
+            logger.info(
+                f"Password is changed is initiated on {self.ip_address}")
             self.local_path = f"radio_cfgs/{self.ip_address}"
             if not os.path.exists(self.local_path):
                 os.makedirs(self.local_path)
@@ -144,8 +149,10 @@ class Ubiquiti_Automation():
 
             # # Apply new config via two ways. either one of the commands will work
             command = ["/usr/etc/rc.d/rc.softrestart save"]
-            # # command = "cfgmtd -f /tmp/system.cfg -w"
+            # # command = ["cfgmtd -f /tmp/system.cfg -w"]
             self.execute_commands(commands=command)
+
+            self.disconnect()
 
             logger.info(f"Password is changed on {self.ip_address}")
             return f"Password is changed on {self.ip_address}"
