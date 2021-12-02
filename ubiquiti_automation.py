@@ -158,7 +158,13 @@ class Ubiquiti_Automation():
             return f"Password is changed on {self.ip_address}"
         except Exception as e:
             logger.error(f"Exception:{e}:{self.ip_address}")
+    
+    def firmware_update(self, local_file: str):
+        self.conn = self._connect()
+        self._upload_single_file(local_file)
 
+        self.execute_commands([f"fwupdate.real -m /var/tmp/{local_file}"])
+        self.disconnect()
             
 if __name__ == "__main__":
     # give you details here for the radio.
